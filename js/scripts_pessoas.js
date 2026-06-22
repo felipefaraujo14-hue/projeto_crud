@@ -1,3 +1,6 @@
+//Importando arquivos
+import { calcDesconto } from './scripts_calculos.js';
+
 const formPessoa = document.querySelector("#form-pessoa");
 const divLista = document.querySelector("#div-lista-pessoas");
 const btnLimpar = document.querySelector("#btn-limpar");
@@ -23,9 +26,6 @@ formPessoa.addEventListener("submit", (evt) => {
 btnLimpar.addEventListener("click", () => {
     formPessoa.reset();
 
-    // Se quiser apagar também a lista cadastrada, descomente as linhas abaixo:
-    // pessoas.length = 0;
-    // divLista.innerHTML = "";
 });
 
 const addPessoa = (objPessoa) => {
@@ -39,9 +39,8 @@ const listPessoas = () => {
     pessoas.forEach((elem, i) => {
         divLista.innerHTML += `
             ${i + 1} - ${elem.nome}
-            ${elem.idade} anos, 
+            ${elem.idade} anos,
             R$ ${parseFloat(elem.renda).toFixed(2).replace(".", ",")}
-            <br>
-        `;
+            ${calcDesconto(elem)}<br>`;
     });
 };
