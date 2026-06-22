@@ -1,24 +1,47 @@
-//Pegando elementos do dom
-const formPessoa = document.querySelector("#form-pessoa")
-const divlista = document.querySelector("#div-lista-pessoas")
+const formPessoa = document.querySelector("#form-pessoa");
+const divLista = document.querySelector("#div-lista-pessoas");
+const btnLimpar = document.querySelector("#btn-limpar");
 
-// Criando array pessoas
-const pessoas = []
+const pessoas = [];
 
+formPessoa.addEventListener("submit", (evt) => {
+    evt.preventDefault();
 
-//Capturar o evento submit
-formPessoa.addEventListener ('submit', (evt) => {
-//Interroper o efeito padrao submeter dos dados do formulario
-  evt.preventDefault()
+    const dadosFormPessoa = new FormData(formPessoa);
 
-  //Criar um objeto formulario
-  const dadosFormPessoas = new FormData(formPessoa)
+    const pessoa = {
+        nome: dadosFormPessoa.get("nome"),
+        idade: dadosFormPessoa.get("idade"),
+        renda: dadosFormPessoa.get("renda")
+    };
 
-//Criar um objeto literal
-const pessoa = {
-nome: dadosFormPessoas.get ('nome'),
-idade: dadosFormPessoas.get ('idade'),
-renda: dadosFormPessoas.get ('renda')
-}
+    addPessoa(pessoa);
 
-})
+    formPessoa.reset();
+});
+
+btnLimpar.addEventListener("click", () => {
+    formPessoa.reset();
+
+    // Se quiser apagar também a lista cadastrada, descomente as linhas abaixo:
+    // pessoas.length = 0;
+    // divLista.innerHTML = "";
+});
+
+const addPessoa = (objPessoa) => {
+    pessoas.push(objPessoa);
+    listPessoas();
+};
+
+const listPessoas = () => {
+    divLista.innerHTML = "";
+
+    pessoas.forEach((elem, i) => {
+        divLista.innerHTML += `
+            ${i + 1} - ${elem.nome}
+            ${elem.idade} anos, 
+            R$ ${parseFloat(elem.renda).toFixed(2).replace(".", ",")}
+            <br>
+        `;
+    });
+};
